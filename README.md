@@ -1,5 +1,16 @@
 # Base TypeScript API
 
+## Modules
+
+- User Module
+  - Hash Provider (bcrypt)
+  - Ensure Authenticated
+- Notification Module
+
+## Shared Modules
+
+- AppErrors
+
 ## Providers
 
   - Cache Provider
@@ -7,6 +18,7 @@
   - Mail Provider
     - Ethereal (development)
     - SES
+    - Postmark
   - Mail Template Provider
     - Handlebars
   - Storage Provider
