@@ -1,5 +1,6 @@
 interface IMailConfig {
   driver: 'ethereal' | 'ses' | 'postmark';
+  postmarkToken: string;
 
   defaults: {
     from: {
@@ -11,6 +12,7 @@ interface IMailConfig {
 
 export default {
   driver: process.env.MAIL_DRIVER || 'ethereal',
+  postmarkToken: process.env.POSTMARK_TOKEN,
 
   defaults: {
     from: {

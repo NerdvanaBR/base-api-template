@@ -1,5 +1,4 @@
-import nodemailer, { Transporter } from 'nodemailer';
-import postmarkTransport from 'nodemailer-postmark-transport';
+import postmark, { ServerClient } from 'postmark';
 import { inject, injectable } from 'tsyringe';
 import mailConfig from '@config/mail';
 
@@ -9,19 +8,13 @@ import ISendMailDTO from '../dtos/ISendMailDTO';
 
 @injectable()
 export default class SESMailProvider implements IMailProvider {
-  private client: Transporter;
+  private client: ServerClient;
 
   constructor(
     @inject('MailTemplateProvider')
     private mailTemplateProvider: IMailTemplateProvider,
   ) {
-    this.client = nodemailer.createTransport(
-      postmarkTransport({
-        auth: {
-          apiKey: process.env.POSTMARK_TOKEN,
-        },
-      }),
-    );
+    this.client = new postmark.Client(mailConfig.postmarkToken);
   }
 
   public async sendMail({
@@ -30,19 +23,13 @@ export default class SESMailProvider implements IMailProvider {
     subject,
     templateData,
   }: ISendMailDTO): Promise<void> {
-    const { name, email } = mailConfig.defaults.from;
+    const { email } = mailConfig.defaults.from;
 
-    await this.client.sendMail({
-      from: {
-        name: from?.name || name,
-        address: from?.email || email,
-      },
-      to: {
-        name: to.name,
-        address: to.email,
-      },
-      subject,
-      html: await this.mailTemplateProvider.parse(templateData),
+    await this.client.sendEmail({
+      From: from?.email || email,
+      To: to.email,
+      Subject: subject,
+      HtmlBody: await this.mailTemplateProvider.parse(templateData),
     });
   }
 }
