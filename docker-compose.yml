@@ -1,0 +1,54 @@
+version: '3.1'
+services:
+  api:
+    build: .
+    container_name: api
+    volumes:
+      - .:/opt/api
+      - /opt/api/node_modules
+    ports:
+      - '3333:3333'
+    networks:
+      - api-network
+    depends_on:
+      - postgres
+      - mongodb
+      - redis
+  postgres:
+    container_name: api-postgres
+    image: postgres:latest
+    restart: always
+    tty: true
+    volumes:
+      - .pgdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASS}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - '5432:5432'
+    networks:
+      - api-network
+  mongodb:
+    container_name: api-mongodb
+    image: mongo:latest
+    ports:
+      - '27017:27017'
+    networks:
+      - api-network
+  redis:
+    image: bitnami/redis:latest
+    container_name: api-redis
+    environment:
+      - ALLOW_EMPTY_PASSWORD=no
+      - REDIS_PASSWORD=${REDIS_PASS}
+    volumes:
+      - api-redis-data:/data
+    networks:
+      - api-network
+
+volumes:
+  api-redis-data:
+
+networks:
+  api-network:
+    driver: bridge

@@ -7,4 +7,5 @@ coverage/
 tmp/*
 !tmp/.gitkeep
 .env
+.pgdata
 ormconfig.json
