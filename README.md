@@ -21,9 +21,16 @@
     - Postmark
   - Mail Template Provider
     - Handlebars
+  - Payment Provider
+    - GalaxPay
   - Storage Provider
     - Disk (local/development)
     - S3
+
+## Migrations
+
+  - Users Table
+  - Payments Table
 
 ## Middlewares
 
