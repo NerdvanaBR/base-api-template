@@ -13,6 +13,9 @@ import projectPackage from '@root/package.json';
 import uploadConfig from '@config/upload';
 import routes from './routes';
 
+import '@shared/infra/typeorm';
+import '@shared/container';
+
 const { version } = projectPackage;
 const { NODE_ENV, APP_NAME, APP_ADDRESS, APP_PORT = 3333 } = process.env;
 
