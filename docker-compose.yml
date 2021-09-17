@@ -2,6 +2,8 @@ version: '3.1'
 services:
   api:
     build: .
+    environment:
+      - NODE_ENV
     container_name: api
     volumes:
       - .:/opt/api
